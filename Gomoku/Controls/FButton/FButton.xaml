@@ -1,0 +1,148 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:FiveInARow.Controls"><!--此处可能需要修改！对应的在.xaml.cs文件中需要修改名称空间！-->
+   
+   <!--FIcon格式定义-->
+    <Style x:Key="FIcon" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="pack://application:,,,/doc/#iconfont"/><!--此处可能需要修改！-->
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="20"/>
+    </Style>
+
+    <!--FButton模板-->
+    <ControlTemplate x:Key="FButtonTemplate" TargetType="{x:Type local:FButton}">
+        <Border x:Name="border" Background="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Background}"
+                Height="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Height}"
+                CornerRadius="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=CornerRadius}"
+                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+                Width="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Width}">
+            <!--Icon/Text-->
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
+                        Margin="{TemplateBinding Padding}"
+                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
+                <TextBlock x:Name="icon" Margin="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=FIconMargin}"
+                           RenderTransformOrigin="0.5,0.5" Style="{StaticResource FIcon}"
+                           Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path= FIcon}"
+                           FontSize="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=FIconSize}"
+                           Foreground="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Foreground}">
+                    <TextBlock.RenderTransform>
+                        <RotateTransform x:Name="transIcon" Angle="0"/>
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+
+                <TextBlock x:Name="txt" VerticalAlignment="Center"
+                           TextDecorations="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=ContentDecorations}"
+                           Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Content}"
+                           FontSize="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=FontSize}"
+                           Foreground="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Foreground}"/>
+            </StackPanel>
+        </Border>
+        <!--触发器-->
+        <ControlTemplate.Triggers>
+            <!--设置鼠标进入时的背景、前景样式-->
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=MouseOverBackground}" TargetName="border"/>
+                <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=MouseOverForeground}" TargetName="icon"/>
+                <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=MouseOverForeground}" TargetName="txt"/>
+            </Trigger>
+            <!--Ficon的动画触发器-->
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="true"/>
+                    <Condition Property="AllowsAnimation" Value="true"/>
+                </MultiTrigger.Conditions>
+                <MultiTrigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="transIcon" Storyboard.TargetProperty="Angle" To="180" Duration="0:0:0.2"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </MultiTrigger.EnterActions>
+                <MultiTrigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="transIcon" Storyboard.TargetProperty="Angle" To="0" Duration="0:0:0.2"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </MultiTrigger.ExitActions>
+            </MultiTrigger>
+            <!--鼠标按下时的前景、背景样式-->
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=PressedBackground}" TargetName="border"/>
+                <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=PressedForeground}" TargetName="icon"/>
+                <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=PressedForeground}" TargetName="txt"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.5" TargetName="border"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!--样式1-->
+    <Style x:Key="DefaultFButtonStyle" TargetType="{x:Type local:FButton}">
+        <Setter Property="Background" Value="#1D4A9A"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="MouseOverBackground" Value="Orange"/>
+        <Setter Property="MouseOverForeground" Value="White"/>
+        <Setter Property="PressedBackground" Value="DarkOrange"/>
+        <Setter Property="PressedForeground" Value="White"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="Width" Value="100"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="CornerRadius" Value="0"/>
+        <Setter Property="FIconSize" Value="20"/>
+        <Setter Property="Template" Value="{StaticResource FButtonTemplate}"/>
+        <Setter Property="Padding" Value="3,1,3,1"/>
+        <Setter Property="Content" Value="{x:Null}"/>
+        <Setter Property="FIconMargin" Value="0,0,0,0"/>
+        <Setter Property="AllowsAnimation" Value="False"/>
+    </Style>
+
+    <!--背景透明的FButton样式-->
+    <Style x:Key="FButtonTransparency" TargetType="{x:Type local:FButton}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="MouseOverBackground" Value="Transparent"/>
+        <Setter Property="PressedBackground" Value="Transparent"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="MouseOverForeground" Value="Orange"/>
+        <Setter Property="PressedForeground" Value="DarkOrange"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="Height" Value="Auto"/>
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="CornerRadius" Value="0"/>
+        <Setter Property="FIconMargin" Value="0,0,5,0"/>
+        <Setter Property="AllowsAnimation" Value="False"/>
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+
+    <!--LinkButton的FButton样式，默认无FIcon-->
+    <Style x:Key="FButtonLinkButton" TargetType="{x:Type local:FButton}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="MouseOverBackground" Value="Transparent"/>
+        <Setter Property="PressedBackground" Value="Transparent"/>
+        <Setter Property="Foreground" Value="#0816BB"/>
+        <Setter Property="MouseOverForeground" Value="Orange"/>
+        <Setter Property="PressedForeground" Value="DarkOrange"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="Height" Value="Auto"/>
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="CornerRadius" Value="0"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FIconSize" Value="20"/>
+        <Setter Property="Template" Value="{StaticResource FButtonTemplate}"/>
+        <Setter Property="Padding" Value="3,1,3,1"/>
+        <Setter Property="Content" Value="{x:Null}"/>
+        <Setter Property="FIconMargin" Value="0,0,5,0"/>
+        <Setter Property="AllowsAnimation" Value="False"/>
+        <Setter Property="ContentDecorations" Value="Underline"/>
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+
+    <!--默认样式-->
+    <Style TargetType="{x:Type local:FButton}" BasedOn="{StaticResource DefaultFButtonStyle}"/>
+
+</ResourceDictionary>

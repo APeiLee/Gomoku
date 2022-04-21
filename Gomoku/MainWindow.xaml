@@ -1,0 +1,43 @@
+﻿<Window x:Class="FiveInARow.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ignore="http://www.galasoft.ch/ignore"
+        xmlns:fb="clr-namespace:FiveInARow.Controls"
+        mc:Ignorable="d ignore"
+        Height="640"
+        Width="800"
+        Title="Gomoku"
+        WindowStartupLocation="CenterScreen"
+        DataContext="{Binding Main, Source={StaticResource Locator}}">
+
+    <Grid>
+        <Grid.Resources>
+            <Style x:Key="LineStyle" TargetType="Line">
+                <Setter Property="StrokeThickness" Value="3"/>
+                <Setter Property="Stroke" Value="Black"/>
+            </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="620"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid Background="LightYellow">
+            <Canvas Name="ChessboardCanvas" Margin="20" Background="LightYellow" Width="560" Height="560"
+                MouseMove="ChessboardCanvas_OnMouseMove"
+                PreviewMouseLeftButtonDown="ChessboardCanvas_OnPreviewMouseLeftButtonDown">
+                <Line X1="0" Y1="0" X2="560" Y2="0" Style="{StaticResource LineStyle}"/>
+                <Line X1="0" Y1="560" X2="560" Y2="560" Style="{StaticResource LineStyle}"/>
+                <Line X1="0" Y1="0" X2="0" Y2="560" Style="{StaticResource LineStyle}"/>
+                <Line X1="560" Y1="0" X2="560" Y2="560" Style="{StaticResource LineStyle}"/>
+            </Canvas>
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Border BorderBrush="Black" BorderThickness="1" Margin="10,25">
+                <fb:FButton Content="重新开始" Click="ButtonBase_OnClick"/>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>
